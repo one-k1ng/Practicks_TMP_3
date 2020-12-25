@@ -5,89 +5,52 @@ namespace Practicks_TMP_2
 {
     class Graph
     {
-        List<Vertex> Vertexes = new List<Vertex>();
-        List<Edge> Edges = new List<Edge>();
+        List<int> _numbersOfNodes = new List<int>();
+        List<Edge> _edges = new List<Edge>();
 
-        public int VertexCount => Vertexes.Count;
-        public int EdgeCount => Edges.Count;
+		public void PushNode(int newNode)
+		{
+			_numbersOfNodes.Add(newNode);
+		}
 
-        public void AddVertex(Vertex vertex)
-        {
-            Vertexes.Add(vertex);
-        }
+		public void ConnectNodes(int startNode, int finishNode)
+		{
+			_edges.Add(new Edge(startNode, finishNode));
+		}
 
-        public void AddEdge(Vertex from, Vertex to)
-        {
-            var edge = new Edge(from, to);
-            Edges.Add(edge);
-        }
+		public void PrintMatrix()
+		{
+			string[,] matrix = new string[_numbersOfNodes.Count + 1, _numbersOfNodes.Count + 1];
 
-        public int[,] GetMatrix()
-        {
-            var matrix = new int[Vertexes.Count, Vertexes.Count];
+			for (int i = 0; i < _numbersOfNodes.Count + 1; ++i)
+			{
+				for (int j = 0; j < _numbersOfNodes.Count + 1; ++j)
+				{
+					matrix[i, j] = "0";
+				}
+			}
+			matrix[0, 0] = " ";
 
-            foreach (var edge in Edges)
-            {
-                var row = edge.From.Number - 1;
-                var column = edge.To.Number - 1;
+			for (int i = 1; i < _numbersOfNodes.Count + 1; ++i)
+			{
+				matrix[0, i] = $"X{i}";
+				matrix[i, 0] = $"X{i}";
+			}
 
-                matrix[row, column] = edge.Weight;
-            }
-            return matrix;
-        }
+			foreach (Edge e in _edges)
+				matrix[e.startNode, e.finishNode] = "1";
 
-        public List<Vertex> GetVertexLists(Vertex vertex)
-        {
-            var result = new List<Vertex>();
-
-            foreach (var edge in Edges)
-            {
-                if (edge.From == vertex)
-                {
-                    result.Add(edge.To);
-                }
-            }
-
-            return result;
-        }
-
-        public static void GetMatrix(Graph graph)
-        {
-            for (int i = 0; i < graph.VertexCount; ++i)
-            {
-                Console.Write($"  {i + 1}");
-            }
-            Console.WriteLine();
-            int[,] matrix = graph.GetMatrix();
-            for (int i = 0; i < graph.VertexCount; i++)
-            {
-                Console.Write(i + 1);
-                for (int j = 0; j < graph.VertexCount; j++)
-                {
-                    Console.Write("|" + matrix[i, j] + "|");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("_________________________");
-            Console.WriteLine(" ");
-        }
-
-        public static void GetVertex(Graph graph, Vertex vertex)
-        {
-            Console.Write(vertex.Number + ": ");
-            foreach (var v in graph.GetVertexLists(vertex))
-            {
-                Console.Write(v.Number + ", ");
-            }
-            Console.WriteLine();
-        }
-
-        public static void V_V (Graph graph,Vertex vertex)
-        {
-            foreach (var v in graph.GetVertexLists(vertex))
-            {
-
-            }
-        }
-    }
+			for (int i = 0; i < _numbersOfNodes.Count + 1; ++i)
+			{
+				for (int j = 0; j < _numbersOfNodes.Count + 1; ++j)
+				{
+					if (matrix[j, i].IndexOf("X") != -1)
+						Console.Write(matrix[i, j] + "  ");
+					else
+						Console.Write(matrix[i, j] + "   ");
+				}
+				Console.WriteLine();
+			}
+		}
+	}
 }

@@ -4,18 +4,13 @@ namespace Practicks_TMP_2
 {
     class Edge
     {
-        public Vertex From { get; set; }
-        public Vertex To { get; set; }
-        public int Weight { get; set; }
-        public Edge (Vertex from, Vertex to, int weight = 1)
+        public int startNode { get; }
+        public int finishNode { get; }
+        public Edge (int newStart, int newFinish)
         {
-            From = from;
-            To = to;
-            Weight = weight;
+            startNode = newStart;
+            finishNode = newFinish;
         }
-        public override string ToString()
-        {
-            return $"({From}; {To})";
-        }
+
     }
 }
